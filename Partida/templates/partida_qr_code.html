@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center text-center">
+    <h3>QR Code para a partida: {{ partida.titulo }}</h3>
+    <img src="{{ partida.qr_code.url }}" alt="QR Code da Partida" class="img-fluid my-3">
+    <p>Mostre este QR Code no local da partida para que os jogadores façam check-in.</p>
+</div>
+{% endblock %}

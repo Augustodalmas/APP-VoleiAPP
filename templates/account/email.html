@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    {% load i18n %}
+    {% load allauth account %}  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .email-container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        .btn-custom {
+            background-color: #6e8efb;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #5a75d1;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(110, 142, 251, 0.25);
+            border-color: #6e8efb;
+        }
+        
+        #id_email{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h2 class="text-center mb-4">Confirmar E-mail</h2>
+        <form method="post" action="{% url 'account_email' %}">
+            <div class="mb-4">
+                {% trans 'Os seguintes endereços de e-mail estão associados à sua conta:' %}
+            </div>
+            {% csrf_token %}
+            {% if emailaddresses %}
+            {% for radio in emailaddress_radios %}
+                    {% with emailaddress=radio.emailaddress %}
+                        {% element field type="radio" checked=radio.checked name="email" value=emailaddress.email id=radio.id %}
+                            {% slot label %}
+                                {{ emailaddress.email }}
+                                {% if emailaddress.verified %}
+                                    {% element badge tags="success,email,verified" %}
+                                        {% translate "Verificado" %}
+                                    {% endelement %}
+                                {% else %}
+                                    {% element badge tags="warning,email,unverified" %}
+                                        {% translate "Não Verificado" %}
+                                    {% endelement %}
+                                {% endif %}
+                                {% if emailaddress.primary %}
+                                    {% element badge tags="email,primary" %}
+                                        {% translate "Principal" %}
+                                    {% endelement %}
+                                {% endif %}
+                            {% endslot %}
+                        {% endelement %}
+                    {% endwith %}
+                {% endfor %}
+                {% else %}
+                    {% include "account/snippets/warn_no_email.html" %}
+                {% endif%}
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-custom w-100" name="action_primary">{% translate "Tornar principal" %}</button>
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-custom w-100" name="action_send">{% translate "Reenviar verificação" %}</button>
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-custom w-100" name="action_remove">{% translate "Remover" %}</button>
+                </div>
+        </form>
+        <form action="{% url 'account_email' %}" method="post">
+            <div class="mt-5">
+            {% if can_add_email %}
+                {% element h2 %}
+                    {% trans "Adicionar Novo Email" %}
+                {% endelement %}
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="email" class="form-label">{% trans "Email:" %}</label>
+                    {{ form.email }}
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-custom w-100" name="action_add">Adicionar Email</button>
+                </div>
+            {% endif %}
+            </div>
+        </form>
+        <div class="mt-2">
+            <a href="{% url 'account_profile' %}" class="btn btn-danger w-100">{% trans "Voltar" %}</a>
+        </div>
+    </div>
+    {% block extra_body %}
+        <script>
+    (function() {
+    var message = "{% trans 'Você tem certeza que deseja remover esse E-mail?' %}";
+    var actions = document.getElementsByName('action_remove');
+    if (actions.length) {
+        actions[0].addEventListener("click", function(e) {
+        if (! confirm(message)) {
+            e.preventDefault();
+        }
+        });
+    }
+    })();
+        </script>
+    {% endblock extra_body %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

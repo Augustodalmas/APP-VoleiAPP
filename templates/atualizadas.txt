@@ -1,0 +1,7 @@
+Já foram "atualizadas"
+-Login
+-Logout
+-Confirmar Email
+-Confirmação Email - link
+-Redefinir Senha
+-Reauthenticar

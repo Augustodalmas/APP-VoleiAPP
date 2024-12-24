@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load i18n %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Editar Perfil" %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .profile-container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px;
+        }
+        .btn-custom {
+            background-color: #6e8efb;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #5a75d1;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2 class="text-center mb-4">{% trans "Editar Perfil" %}</h2>
+        <form method="post" action="{% url 'account_profile_edit' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">{% trans "Usuário" %}</label>
+                {{ form.username }}
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">{% trans "Email" %}</label>
+                {{ form.email }}
+            </div>
+            <div class="mb-3">
+                <label for="data_nascimento" class="form-label">{% trans "Data de Nascimento" %}</label>
+                {{ form.data_nascimento }}
+            </div>
+            <div class="mb-3">
+                <label for="numero_telefone" class="form-label">{% trans "Número de Telefone" %}</label>
+                {{ form.numero_telefone }}
+            </div>
+            <div class="mb-3">
+                <label for="cpf" class="form-label">{% trans "CPF" %}</label>
+                {{ form.cpf }}
+            </div>
+            <div class="mb-3">
+                <label for="cidade" class="form-label">{% trans "Cidade" %}</label>
+                {{ form.cidade }}
+            </div>
+            <div class="mb-3">
+                <label for="posicao" class="form-label">{% trans "Posição" %}</label>
+                {{ form.posicao }}
+            </div>
+            <div class="mb-3">
+                <label for="nivel" class="form-label">{% trans "Nível" %}</label>
+                {{ form.nivel }}
+            </div>
+            <div class="mb-3">
+                <label for="rotacao" class="form-label">{% trans "Rotação" %}</label>
+                {{ form.rotacao }}
+            </div>
+            <div class="mb-3">
+                <label for="pontuacao" class="form-label" readonly>{% trans "Pontuação" %}</label>
+                {{ form.pontuacao }}
+            </div>
+            <div class="mb-3">
+                <label for="foto" class="form-label">{% trans "Foto" %}</label>
+                {{ form.foto }}
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-custom w-100">Salvar</button>
+            </div>
+        </form>        
+        <div class="text-center">
+            <a href="{% url 'account_profile' %}" class="mt-2 btn btn-danger w-100">{% trans "Cancelar" %}</a>
+        </div>
+    </div>
+</body>
+</html>
