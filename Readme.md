@@ -27,9 +27,9 @@ Para executar o projeto, siga os passos abaixo:
 Instalar dependências:
 Certifique-se de que todas as dependências estão instaladas usando um ambiente virtual e o arquivo requirements.txt (se aplicável):
 
-'''python -m venv venv'''
+```python -m venv venv```
 
-"""pip install -r requirements.txt"""
+```pip install -r requirements.txt```
 
 Migrar o banco de dados:
 Execute o comando para aplicar as migrações:
@@ -39,15 +39,15 @@ Execute o comando para aplicar as migrações:
 Iniciar o servidor:
 Rode o servidor local para testar o aplicativo:
 
-python manage.py runserver
+```python manage.py runserver```
 
 Importar as cidades:
-Acesse a URL /user/cidades para importar as cidades necessárias.
+Acesse a URL ```/user/cidades``` para importar as cidades necessárias.
 
 Criar um superusuário:
 Para acessar a interface de administração, crie um superusuário:
 
-python manage.py createsuperuser
+```python manage.py createsuperuser```
 
 Planos Futuros
 
