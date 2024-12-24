@@ -6,6 +6,7 @@ Este APP foi desenvolvido para suprir uma necessidade enfrentada por organizador
 
 Pensando nisso, resolvi criar uma plataforma simples, onde os jogadores possam se reunir de forma rápida e fácil, aliviando o estresse dos organizadores!
 
+![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
 A plataforma ainda está em desenvolvimento, mas já foi adicionada ao meu GitHub para compartilhar a iniciativa e acelerar seu progresso. Atualmente, o foco é nas funcionalidades, com pouco cuidado com o design, mas há planos futuros para contratar um designer profissional e melhorar a parte gráfica do aplicativo.
 
 Além disso, tenho como objetivo transformar essa plataforma em um app móvel no futuro.
