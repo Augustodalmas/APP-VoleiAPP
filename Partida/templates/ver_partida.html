@@ -33,11 +33,11 @@
         </div>
         <div class="mb-3">
             <label for="local" class="form-label">{% trans "Local" %}</label>
-            <input type="text" class="form-control" id="local" name="local" value="{{ verPartida.local }}">
+            <input type="text" class="form-control" id="local" name="local" value="{{ verPartida.local }}" readonly>
         </div>
         <div class="mb-3">
             <label for="lotacao" class="form-label">{% trans "Vagas restantes" %}</label>
-            <input type="text" class="form-control" id="lotacao" name="lotacao" value="{{ verPartida.lotacao }}">
+            <input type="text" class="form-control" id="lotacao" name="lotacao" value="{{ verPartida.lotacao }}" readonly>
         </div>
         <a href="{% url 'ListaPartidas' %}" class="mt-2 btn btn-danger w-100">{% trans "Voltar" %}</a>
         {% if not participacao.pago %} <!--CASO ALGUEM PAGOU, SEMPRE APARECE A MENSAGEM - ERRRO-->

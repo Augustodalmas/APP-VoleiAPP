@@ -1,5 +1,5 @@
 from django.urls import path
-from Partida.views import criarPartida, listaPartida, verPartida, exibirQRCodeView, realizarCheckInView, entrarPartida, minhasPartidas, meuHistorico
+from Partida.views import criarPartida, listaPartida, verPartida, exibirQRCodeView, realizarCheckInView, entrarPartida, minhasPartidas, meuHistorico, AdicionarLocal
 from Pagamento.views import criar_sessao_stripe
 
 
@@ -17,4 +17,5 @@ urlpatterns = [
     path('historico',
          meuHistorico.as_view(), name='historico'),
     path('<int:produto_id>/checkout', criar_sessao_stripe, name='checkout'),
+    path('criar_local/', AdicionarLocal.as_view(), name="adicionar_local"),
 ]

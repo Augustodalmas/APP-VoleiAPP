@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<body>
+    <div class="container-fluid">
+        <form method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
+            <div class="mb-3">
+                <label for="nome" class="form-label">{% trans "Nome:" %}</label>
+                {{ form.nome }}
+                {{ form.nome.errors }}
+            </div>
+            <div class="mb-3">
+                <label for="cidade" class="form-label">{% trans "Cidade:" %}</label>
+                {{ form.cidade }}
+                {{ form.cidade.errors }}
+            </div>
+            <div class="mb-3">
+                <label for="bairro" class="form-label">{% trans "Bairro:" %}</label>
+                {{ form.bairro }}
+                {{ form.bairro.errors }}
+            </div>
+            <div class="mb-3">
+                <label for="rua" class="form-label">{% trans "Rua:" %}</label>
+                {{ form.rua }}
+                {{ form.rua.errors }}
+            </div>
+            <div class="mb-3">
+                <label for="numero" class="form-label">{% trans "Número:" %}</label>
+                {{ form.numero }}
+                {{ form.numero.errors }}
+            </div>
+            <div class="mb-3">
+                <label for="CEP" class="form-label">{% trans "CEP:" %}</label>
+                {{ form.CEP }}
+                {{ form.CEP.errors }}
+            </div>
+            <button type="submit" class="btn btn-primary">Criar Local</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from Partida.models import Partida
+from Partida.models import Partida, Local
 
 
 class formPartida(forms.ModelForm):
@@ -23,6 +23,9 @@ class formPartida(forms.ModelForm):
         ('00:00', '00:00'),
     ]
 
+    local = forms.ModelChoiceField(queryset=Local.objects.all(
+    ), widget=forms.Select(attrs={'class': 'form-select'}))
+
     hora = forms.ChoiceField(choices=HORARIOS, widget=forms.Select(
         attrs={'class': 'form-select'}))
 
@@ -36,15 +39,25 @@ class formPartida(forms.ModelForm):
         model = Partida
         fields = ['titulo', 'descricao', 'nivel',
                   'rotacao', 'data', 'hora', 'local', 'lotacao']
-        widgets = {
-            'data': forms.DateInput(attrs={'type': 'date'}),
-            'descricao': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Descreva a partida...'}),
-            'local': forms.TextInput(attrs={'placeholder': 'Exemplo: Quadra A, Arena X'}),
-            'lotacao': forms.NumberInput(attrs={'min': 1, 'placeholder': 'Número de vagas'}),
-        }
 
     def clean_lotacao(self):
         lotacao = self.cleaned_data.get('lotacao')
         if lotacao <= 0:
             raise forms.ValidationError('A lotação deve ser maior que 0.')
         return lotacao
+
+
+class LocalForm(forms.ModelForm):
+    class Meta:
+        model = Local
+        fields = ['nome', 'cidade', 'bairro', 'rua', 'numero', 'CEP']
+        widgets = {
+            'CEP': forms.TextInput(attrs={'placeholder': '00000-000'}),
+        }
+
+    def clean_CEP(self):
+        cep = self.cleaned_data.get('CEP')
+        if len(cep) != 9:
+            raise forms.ValidationError(
+                'CEP inválido. Certifique-se de usar o formato 00000-000.')
+        return cep

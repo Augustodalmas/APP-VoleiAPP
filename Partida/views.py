@@ -3,10 +3,10 @@ from django.urls import reverse_lazy
 from django.utils.timezone import now
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from Partida.models import Partida, Participacao, HistoricoPartida
+from Partida.models import Partida, Participacao, HistoricoPartida, Local
 from User.models import perfilUsuario
 from Pagamento.views import criar_produto_stripe
-from Partida.forms import formPartida
+from Partida.forms import formPartida, LocalForm
 from Notificacao.views import envioEmailParticipar, envioEmailCheckin, envioEmailCriarPartida, enviaEmailPagamento
 
 
@@ -21,7 +21,7 @@ class listaPartida(ListView):
         return contexto
 
 
-class criarPartida(CreateView):
+class criarPartida(LoginRequiredMixin, CreateView):
     model = Partida
     template_name = 'criar_partida.html'
     form_class = formPartida
@@ -36,11 +36,11 @@ class criarPartida(CreateView):
             username=self.request.user.username)  # Pega o usuario que está usando
 
         if partida.nivel == "Iniciante":
-            partida.valor = 5
+            partida.valor = 0.25
         elif partida.nivel == "Intermediario":
-            partida.valor = 7
+            partida.valor = 0.3
         elif partida.nivel == "Avancado":
-            partida.valor = 9
+            partida.valor = 0.35
         try:
             # Criar o produto junto com o Preço no Stripe
             stripe_produto_id, stripe_preco_id = criar_produto_stripe(
@@ -191,7 +191,7 @@ class entrarPartida(LoginRequiredMixin, View):
         })
 
 
-class minhasPartidas(ListView):
+class minhasPartidas(LoginRequiredMixin, ListView):
     model = Partida
     template_name = 'minhas_partidas.html'
     context_object_name = 'partidas'
@@ -207,7 +207,7 @@ class minhasPartidas(ListView):
         ).distinct()
 
 
-class meuHistorico(ListView):
+class meuHistorico(LoginRequiredMixin, ListView):
     model = Partida
     template_name = 'historico.html'
     context_object_name = 'partidas'
@@ -222,3 +222,11 @@ class meuHistorico(ListView):
         return Partida.objects.filter(
             participacao__usuario=self.request.user
         ).distinct()
+
+
+class AdicionarLocal(CreateView):
+    model = Local
+    template_name = 'criar_local.html'
+    form_class = LocalForm
+    context_object_name = 'form'
+    success_url = reverse_lazy('criarPartida')

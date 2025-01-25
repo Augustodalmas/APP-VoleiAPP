@@ -6,17 +6,29 @@ import qrcode
 from io import BytesIO
 
 
+class Local(models.Model):
+    nome = models.CharField(max_length=256)
+    cidade = models.CharField(max_length=256)
+    bairro = models.CharField(max_length=256)
+    rua = models.CharField(max_length=256)
+    numero = models.IntegerField()
+    CEP = models.CharField(max_length=9)
+
+    def __str__(self):
+        return self.nome
+
+
 class Partida(models.Model):
     titulo = models.CharField(max_length=100)
     descricao = models.TextField(blank=True)
 # Amador - profissional
     INICIANTE = 'Iniciante'
-    INTERMEDIARIO = 'Intermediario'
-    AVANCADO = 'Avancado'
+    INTERMEDIARIO = 'Intermediário'
+    AVANCADO = 'Avançado'
     NIVEL = [
         (INICIANTE, 'Iniciante'),
-        (INTERMEDIARIO, 'Intermediario'),
-        (AVANCADO, 'Avancado'),
+        (INTERMEDIARIO, 'Intermediário'),
+        (AVANCADO, 'Avançado'),
     ]
     nivel = models.CharField(max_length=15, choices=NIVEL, default=INICIANTE)
 
@@ -31,7 +43,8 @@ class Partida(models.Model):
     rotacao = models.CharField(max_length=3, choices=ROTACAO, default=SEISX0)
     data = models.DateField()
     hora = models.TimeField()
-    local = models.CharField(max_length=100)  # Trocar para Fk
+    local = models.ForeignKey(
+        Local, on_delete=models.PROTECT, related_name="Quadra_jogo")
     organizador = models.ForeignKey(perfilUsuario, on_delete=models.CASCADE)
     lotacao = models.IntegerField()
     qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)

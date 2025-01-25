@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = 'pt-BR'
 
 TIME_ZONE = 'America/Sao_Paulo'
 
@@ -159,3 +159,22 @@ load_dotenv()
 
 STRIPE_TEST_PUBLIC_KEY = os.getenv('STRIPE_TEST_PUBLIC_KEY')
 STRIPE_TEST_SECRET_KEY = os.getenv('STRIPE_TEST_SECRET_KEY')
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',  # Dados de perfil (nome, foto)
+            'email',    # Dados de email
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',  # Pode ser 'offline' se precisar de token de atualização
+        },
+        'EXCHANGE_TOKEN': True,
+        'VERIFIED_EMAIL': True,
+        'APP': {
+            'client_id': '610863815012-rciabfudhl8lj6f5qv4q07u8vqgh04p5.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}

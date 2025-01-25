@@ -59,12 +59,20 @@
             </div>
             <div class="mb-3">
                 <label for="local" class="form-label">{% trans "Local" %}</label>
-                <input type="text" class="form-control" id="local" name="local" value="{{ CriaPartida.local }}">
+                <div class="input-group">
+                    <select class="form-select" id="local" name="local">
+                        {% for value, label in form.local.field.choices %}
+                            <option value="{{ value }}" {% if value == form.local.value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <!-- Link para adicionar novo local -->
+                    <a href="{% url 'adicionar_local' %}" class="btn btn-link ms-2" title="{% trans 'Adicionar Novo Local' %}">{% trans 'Adicionar' %}</a>
+                </div>
                 {{ form.local.errors }}
-            </div>
+            </div>            
             <div class="mb-3">
                 <label for="lotacao" class="form-label">{% trans "Vagas" %}</label>
-                <input type="text" class="form-control" id="lotacao" name="lotacao" value="{{ CriaPartida.lotacao }}">
+                <input type="text" class="form-control" id="lotacao" name="lotacao" value="{{ CriaPartida.lotacao }}" placeholder="Quantidade vagas">
                 {{ form.lotacao.errors }}
             </div>
             <button type="submit" class="btn btn-primary">Criar Partida</button>
