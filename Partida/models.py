@@ -9,7 +9,7 @@ from io import BytesIO
 class Partida(models.Model):
     titulo = models.CharField(max_length=100)
     descricao = models.TextField(blank=True)
-
+# Amador - profissional
     INICIANTE = 'Iniciante'
     INTERMEDIARIO = 'Intermediario'
     AVANCADO = 'Avancado'
@@ -47,7 +47,7 @@ class Partida(models.Model):
         ]
 
     def gerar_qr_code(self):
-        qr_data = f"http://192.168.1.4:8000/partidas/{self.id}/checkin"
+        qr_data = f"http://127.0.0.1:8000/partidas/{self.id}/checkin"
         qr = qrcode.make(qr_data)
         buffer = BytesIO()
         qr.save(buffer)
