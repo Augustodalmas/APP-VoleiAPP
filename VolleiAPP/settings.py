@@ -159,6 +159,8 @@ load_dotenv()
 
 STRIPE_TEST_PUBLIC_KEY = os.getenv('STRIPE_TEST_PUBLIC_KEY')
 STRIPE_TEST_SECRET_KEY = os.getenv('STRIPE_TEST_SECRET_KEY')
+GOOGLE_ID = os.getenv('client_id')
+SECRET_ID = os.getenv('secret')
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -172,6 +174,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'EXCHANGE_TOKEN': True,
         'VERIFIED_EMAIL': True,
         'APP': {
+            'client_id': GOOGLE_ID,
+            'secret': SECRET_ID,
             'key': ''
         }
     }
