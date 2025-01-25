@@ -172,8 +172,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'EXCHANGE_TOKEN': True,
         'VERIFIED_EMAIL': True,
         'APP': {
-            'client_id': '610863815012-rciabfudhl8lj6f5qv4q07u8vqgh04p5.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': 'x',
+            'secret': 'x',
             'key': ''
         }
     }
