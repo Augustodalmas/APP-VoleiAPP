@@ -47,7 +47,7 @@ class Partida(models.Model):
         ]
 
     def gerar_qr_code(self):
-        qr_data = f"http://127.0.0.1:8000/partidas/{self.id}/checkin"
+        qr_data = f"https://augustodalmas.pythonanywhere.com/partidas/{self.id}/checkin"
         qr = qrcode.make(qr_data)
         buffer = BytesIO()
         qr.save(buffer)
