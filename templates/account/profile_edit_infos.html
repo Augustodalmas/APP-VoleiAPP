@@ -1,93 +1,317 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-{% load i18n %}
+    {% load i18n %}
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Editar Perfil" %}</title>
+    <title>{% trans "Editar Perfil" %} | VoleiApp</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #1e88e5;
+            --primary-dark: #1565c0;
+            --accent-color: #43a047;
+        }
+        
         body {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background-image: url('{% static "images/volleyball-bg.svg" %}'), linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background-attachment: fixed;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            padding: 20px;
         }
+        
         .profile-container {
             background: #fff;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 500px;
+            max-width: 700px;
+            overflow: hidden;
             margin: 20px;
         }
-        .btn-custom {
-            background-color: #6e8efb;
-            color: #fff;
+        
+        .profile-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
         }
-        .btn-custom:hover {
-            background-color: #5a75d1;
+        
+        .profile-header .logo {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 15px;
+        }
+        
+        .profile-header h2 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .profile-header p {
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+        
+        .profile-body {
+            padding: 30px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            font-size: 15px;
+            width: 100%;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(30, 136, 229, 0.25);
+        }
+        
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: #ddd;
+        }
+        
+        .btn-save {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-save:hover {
+            background-color: #388e3c;
+        }
+        
+        .btn-cancel {
+            background-color: #e53935;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #d32f2f;
+        }
+        
+        .form-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-section-title i {
+            margin-right: 10px;
+        }
+        
+        .form-label {
+            font-weight: 500;
+        }
+        
+        .custom-file-upload {
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        
+        .custom-file-upload i {
+            font-size: 30px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        .custom-file-upload:hover {
+            border-color: var(--primary-color);
+            background-color: #f8f9fa;
         }
     </style>
 </head>
 <body>
     <div class="profile-container">
-        <h2 class="text-center mb-4">{% trans "Editar Perfil" %}</h2>
-        <form method="post" action="{% url 'account_profile_edit' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="username" class="form-label">{% trans "Usuário" %}</label>
-                {{ form.username }}
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">{% trans "Email" %}</label>
-                {{ form.email }}
-            </div>
-            <div class="mb-3">
-                <label for="data_nascimento" class="form-label">{% trans "Data de Nascimento" %}</label>
-                {{ form.data_nascimento }}
-            </div>
-            <div class="mb-3">
-                <label for="numero_telefone" class="form-label">{% trans "Número de Telefone" %}</label>
-                {{ form.numero_telefone }}
-            </div>
-            <div class="mb-3">
-                <label for="cpf" class="form-label">{% trans "CPF" %}</label>
-                {{ form.cpf }}
-            </div>
-            <div class="mb-3">
-                <label for="cidade" class="form-label">{% trans "Cidade" %}</label>
-                {{ form.cidade }}
-            </div>
-            <div class="mb-3">
-                <label for="posicao" class="form-label">{% trans "Posição" %}</label>
-                {{ form.posicao }}
-            </div>
-            <div class="mb-3">
-                <label for="nivel" class="form-label">{% trans "Nível" %}</label>
-                {{ form.nivel }}
-            </div>
-            <div class="mb-3">
-                <label for="rotacao" class="form-label">{% trans "Rotação" %}</label>
-                {{ form.rotacao }}
-            </div>
-            <div class="mb-3">
-                <label for="pontuacao" class="form-label" readonly>{% trans "Pontuação" %}</label>
-                {{ form.pontuacao }}
-            </div>
-            <div class="mb-3">
-                <label for="foto" class="form-label">{% trans "Foto" %}</label>
-                {{ form.foto }}
-            </div>
-            <div class="mt-4">
-                <button type="submit" class="btn btn-custom w-100">Salvar</button>
-            </div>
-        </form>        
-        <div class="text-center">
-            <a href="{% url 'account_profile' %}" class="mt-2 btn btn-danger w-100">{% trans "Cancelar" %}</a>
+        <div class="profile-header">
+            <img src="{% static 'images/VoleiAPP-logo.png' %}" alt="VoleiApp Logo" class="logo">
+            <h2>{% trans "Editar Perfil" %}</h2>
+            <p>{% trans "Atualize suas informações pessoais" %}</p>
+        </div>
+        
+        <div class="profile-body">
+            <form method="post" action="{% url 'account_profile_edit' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-user-circle"></i>{% trans "Informações Básicas" %}
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_username" class="form-label">{% trans "Nome de usuário" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_email" class="form-label">{% trans "E-mail" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_data_nascimento" class="form-label">{% trans "Data de Nascimento" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
+                                    {{ form.data_nascimento }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_numero_telefone" class="form-label">{% trans "Número de Telefone" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    {{ form.numero_telefone }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_cpf" class="form-label">{% trans "CPF" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                    {{ form.cpf }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_cidade" class="form-label">{% trans "Cidade" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                    {{ form.cidade }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-volleyball-ball"></i>{% trans "Perfil de Jogador" %}
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="id_posicao" class="form-label">{% trans "Posição" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-running"></i></span>
+                                    {{ form.posicao }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="id_nivel" class="form-label">{% trans "Nível" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-chart-line"></i></span>
+                                    {{ form.nivel }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="id_rotacao" class="form-label">{% trans "Rotação" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-sync-alt"></i></span>
+                                    {{ form.rotacao }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_pontuacao" class="form-label">{% trans "Pontuação" %}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-trophy"></i></span>
+                            {{ form.pontuacao }}
+                        </div>
+                        <small class="text-muted">{% trans "A pontuação é atualizada automaticamente com base na sua participação em partidas." %}</small>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-camera"></i>{% trans "Foto de Perfil" %}
+                    </h3>
+                    <div class="mb-3">
+                        <label for="id_foto" class="form-label">{% trans "Selecione uma foto" %}</label>
+                        {{ form.foto }}
+                        <small class="text-muted">{% trans "Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB." %}</small>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-save">
+                        <i class="fas fa-save me-2"></i>{% trans "Salvar Alterações" %}
+                    </button>
+                    <a href="{% url 'account_profile' %}" class="btn btn-cancel">
+                        <i class="fas fa-times-circle me-2"></i>{% trans "Cancelar" %}
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

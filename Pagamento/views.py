@@ -7,7 +7,7 @@ from Notificacao.views import enviaEmailPagamento
 
 
 # Configuração da API do Stripe
-stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+# stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
 # Função para criar um produto no Stripe
 

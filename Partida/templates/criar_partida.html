@@ -2,84 +2,235 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
-<body>
-    <div class="container-fluid">
-        <form method="post">
-            {% csrf_token %}
-            {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                <ul>
-                    {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-            <div class="mb-3">
-                <label for="titulo" class="form-label">{% trans "Título" %}</label>
-                <input type="text" class="form-control" id="titulo" name="titulo" value="{{ CriaPartida.titulo }}">
-                {{ form.titulo.errors }}
-            </div>
-            <div class="mb-3">
-                <label for="descricao" class="form-label">{% trans "Descrição" %}</label>
-                <input type="text" class="form-control" id="descricao" name="descricao" value="{{ CriaPartida.descricao }}">
-                {{ form.descricao.errors }}
-            </div>
-            <div class="mb-3">
-                <label for="nivel" class="form-label">{% trans "Nível" %}</label>
-                <select class="form-select" id="nivel" name="nivel">
-                    {% for value, label in form.nivel.field.choices %}
-                        <option value="{{ value }}" {% if value == form.nivel.value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-                {{ form.nivel.errors }}
-            </div>
-            <div class="mb-3">
-                <label for="rotacao" class="form-label">{% trans "Rotação" %}</label>
-                <select class="form-select" id="rotacao" name="rotacao">
-                    {% for value, label in form.rotacao.field.choices %}
-                        <option value="{{ value }}" {% if value == form.rotacao.value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-                {{ form.rotacao.errors }}
-            </div>
-            <div class="mb-3">
-                <label for="data" class="form-label">{% trans "Data" %}</label>
-                <input type="date" class="form-control" id="data" name="data" value="{{ CriaPartida.data }}">
-                {{ form.data.errors }}
-            </div>
-            <div class="mb-3">
-                <label for="rotacao" class="form-label">{% trans "Horário" %}</label>
-                <select class="form-select" id="hora" name="hora">
-                    {% for value, label in form.hora.field.choices %}
-                        <option value="{{ value }}" {% if value == form.hora.value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-                {{ form.hora.errors }}
-            </div>
-            <div class="mb-3">
-                <label for="local" class="form-label">{% trans "Local" %}</label>
-                <div class="input-group">
-                    <select class="form-select" id="local" name="local">
-                        {% for value, label in form.local.field.choices %}
-                            <option value="{{ value }}" {% if value == form.local.value %}selected{% endif %}>{{ label }}</option>
-                        {% endfor %}
-                    </select>
-                    <!-- Link para adicionar novo local -->
-                    <a href="{% url 'adicionar_local' %}" class="btn btn-link ms-2" title="{% trans 'Adicionar Novo Local' %}">{% trans 'Adicionar' %}</a>
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary text-white py-3">
+                    <h3 class="mb-0"><i class="fas fa-plus-circle me-2"></i>{% trans "Criar Nova Partida" %}</h3>
                 </div>
-                {{ form.local.errors }}
-            </div>            
-            <div class="mb-3">
-                <label for="lotacao" class="form-label">{% trans "Vagas" %}</label>
-                <input type="text" class="form-control" id="lotacao" name="lotacao" value="{{ CriaPartida.lotacao }}" placeholder="Quantidade vagas">
-                {{ form.lotacao.errors }}
+                
+                <div class="card-body p-4">
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="titulo" class="form-label fw-bold">{% trans "Título da Partida" %} <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-heading"></i></span>
+                                    <input type="text" class="form-control {% if form.titulo.errors %}is-invalid{% endif %}" id="titulo" name="titulo" value="{{ CriaPartida.titulo }}" placeholder="Ex: Partida amistosa de vôlei" required>
+                                    {% if form.titulo.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.titulo.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">Escolha um título descritivo para sua partida</small>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="descricao" class="form-label fw-bold">{% trans "Descrição" %} <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                    <textarea class="form-control {% if form.descricao.errors %}is-invalid{% endif %}" id="descricao" name="descricao" rows="3" placeholder="Descreva os detalhes da partida, regras especiais, etc." required>{{ CriaPartida.descricao }}</textarea>
+                                    {% if form.descricao.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.descricao.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="nivel" class="form-label fw-bold">{% trans "Nível" %} <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-chart-line"></i></span>
+                                    <select class="form-select {% if form.nivel.errors %}is-invalid{% endif %}" id="nivel" name="nivel" required>
+                                        <option value="" selected disabled>Selecione o nível</option>
+                                        {% for value, label in form.nivel.field.choices %}
+                                            <option value="{{ value }}" {% if value == form.nivel.value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if form.nivel.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.nivel.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">Escolha o nível de habilidade recomendado</small>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="rotacao" class="form-label fw-bold">{% trans "Rotação" %} <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-sync-alt"></i></span>
+                                    <select class="form-select {% if form.rotacao.errors %}is-invalid{% endif %}" id="rotacao" name="rotacao" required>
+                                        <option value="" selected disabled>Selecione o tipo de rotação</option>
+                                        {% for value, label in form.rotacao.field.choices %}
+                                            <option value="{{ value }}" {% if value == form.rotacao.value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if form.rotacao.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.rotacao.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="data" class="form-label fw-bold">{% trans "Data" %} <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <input type="date" class="form-control {% if form.data.errors %}is-invalid{% endif %}" id="data" name="data" value="{{ CriaPartida.data }}" required>
+                                    {% if form.data.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.data.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="hora" class="form-label fw-bold">{% trans "Horário" %} <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                    <select class="form-select {% if form.hora.errors %}is-invalid{% endif %}" id="hora" name="hora" required>
+                                        <option value="" selected disabled>Selecione o horário</option>
+                                        {% for value, label in form.hora.field.choices %}
+                                            <option value="{{ value }}" {% if value == form.hora.value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if form.hora.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.hora.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <label for="local" class="form-label fw-bold">{% trans "Local" %} <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                    <select class="form-select {% if form.local.errors %}is-invalid{% endif %}" id="local" name="local" required>
+                                        <option value="" selected disabled>Selecione o local</option>
+                                        {% for value, label in form.local.field.choices %}
+                                            <option value="{{ value }}" {% if value == form.local.value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if form.local.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.local.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="adicionar_local" class="form-label">&nbsp;</label>
+                                <a href="{% url 'adicionar_local' %}" class="btn btn-outline-primary d-block">
+                                    <i class="fas fa-plus-circle me-2"></i>{% trans 'Novo Local' %}
+                                </a>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="lotacao" class="form-label fw-bold">{% trans "Número de Vagas" %} <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                    <input type="number" class="form-control {% if form.lotacao.errors %}is-invalid{% endif %}" id="lotacao" name="lotacao" value="{{ CriaPartida.lotacao }}" placeholder="Ex: 12" min="1" max="24" required>
+                                    {% if form.lotacao.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.lotacao.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">Número total de jogadores que podem participar</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check-circle me-2"></i>{% trans "Criar Partida" %}
+                            </button>
+                            <a href="{% url 'ListaPartidas' %}" class="btn btn-outline-danger">
+                                <i class="fas fa-times-circle me-2"></i>{% trans "Cancelar" %}
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Criar Partida</button>
-        </form>
-        <a href="{% url 'ListaPartidas' %}" class="mt-2 btn btn-danger">{% trans "Voltar" %}</a>
+            
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Dicas para criar uma boa partida</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="d-flex">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; min-width: 40px;">
+                                    <i class="fas fa-info text-white"></i>
+                                </div>
+                                <div>
+                                    <h6>Seja descritivo</h6>
+                                    <p class="text-muted mb-0">Forneça detalhes claros sobre a partida para atrair os jogadores certos.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="d-flex">
+                                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; min-width: 40px;">
+                                    <i class="fas fa-clock text-white"></i>
+                                </div>
+                                <div>
+                                    <h6>Planeje com antecedência</h6>
+                                    <p class="text-muted mb-0">Crie partidas com alguns dias de antecedência para dar tempo aos jogadores se organizarem.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex">
+                                <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; min-width: 40px;">
+                                    <i class="fas fa-users text-white"></i>
+                                </div>
+                                <div>
+                                    <h6>Equilibre os times</h6>
+                                    <p class="text-muted mb-0">Defina o nível adequado para garantir partidas equilibradas e divertidas.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- Link para o Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+</div>
 {% endblock %}
