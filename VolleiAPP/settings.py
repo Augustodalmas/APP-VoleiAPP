@@ -174,8 +174,10 @@ SOCIALACCOUNT_PROVIDERS = {
         'EXCHANGE_TOKEN': True,
         'VERIFIED_EMAIL': True,
         'APP': {
+          
             'client_id': GOOGLE_ID,
             'secret': SECRET_ID,
+
             'key': ''
         }
     }
