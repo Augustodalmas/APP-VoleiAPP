@@ -1,54 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-{% load i18n %}
-{% load allauth account %}
+    {% load i18n %}
+    {% load allauth account %}
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans "Desconectar-se" %}</title>
+    <title>{% trans "Logout" %} | VoleiApp</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #1e88e5;
+            --primary-dark: #1565c0;
+            --danger-color: #e53935;
+            --danger-dark: #c62828;
+        }
+        
         body {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background-image: url('{% static "images/volleyball-bg.svg" %}'), linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background-attachment: fixed;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0;
+            padding: 20px;
         }
-        .logout-container {
+        
+        .auth-container {
             background: #fff;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            overflow: hidden;
+        }
+        
+        .auth-header {
+            background: var(--danger-color);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .auth-header .logo {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 15px;
+        }
+        
+        .auth-header h2 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .auth-header p {
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+        
+        .auth-body {
+            padding: 30px;
             text-align: center;
         }
-        .btn-custom {
-            background-color: #fb6e6e;
-            color: #fff;
+        
+        .logout-icon {
+            font-size: 60px;
+            color: var(--danger-color);
+            margin-bottom: 20px;
         }
-        .btn-custom:hover {
-            background-color: #ff0000;
+        
+        .btn-logout {
+            background-color: var(--danger-color);
             color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-logout:hover {
+            background-color: var(--danger-dark);
+            color: white;
+        }
+        
+        .btn-cancel {
+            background-color: #f5f5f5;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #e0e0e0;
         }
     </style>
 </head>
 <body>
-    <div class="logout-container">
-        <h2 class="mb-4">{% trans "Desconectar-se" %}</h2>
-        <p>{% trans "Você tem certeza que deseja se desconectar?" %}</p>
-        <form method="post" action="{% url 'account_logout' %}">
-            {% csrf_token %}
-            {{ redirect_field }}
-            <div class="mt-4 d-grid gap-2">
-                <button type="submit" class="btn btn-custom">{% trans "Desconectar-se" %}</button>
-                <a href="{% url 'account_profile' %}" class="btn btn-outline-secondary">{% trans "Cancelar" %}</a>
+    <div class="auth-container">
+        <div class="auth-header">
+            <img src="{% static 'images/VoleiAPP-logo.png' %}" alt="VoleiApp Logo" class="logo">
+            <h2>{% trans "Logout" %}</h2>
+            <p>{% trans "Confirme para sair do sistema" %}</p>
+        </div>
+        
+        <div class="auth-body">
+            <div class="logout-icon">
+                <i class="fas fa-sign-out-alt"></i>
             </div>
-        </form>
+            
+            <h3 class="mb-4">{% trans "Tem certeza que deseja sair?" %}</h3>
+            <p class="mb-4">{% trans "Você será desconectado do VoleiApp e precisará fazer login novamente para acessar sua conta." %}</p>
+            
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                {{ redirect_field }}
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-logout">
+                        <i class="fas fa-sign-out-alt me-2"></i>{% trans "Sim, quero sair" %}
+                    </button>
+                    <a href="{% url 'account_profile' %}" class="btn btn-cancel">
+                        <i class="fas fa-times-circle me-2"></i>{% trans "Cancelar" %}
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

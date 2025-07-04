@@ -30,31 +30,31 @@ class criarPartida(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.organizador = self.request.user
-        response = super().form_valid(form)
-        partida = self.object
-        perfil_usuario = perfilUsuario.objects.get(
-            username=self.request.user.username)  # Pega o usuario que está usando
+        return super().form_valid(form)
+        # partida = self.object
+        # perfil_usuario = perfilUsuario.objects.get(
+        #     username=self.request.user.username)  # Pega o usuario que está usando
 
-        if partida.nivel == "Iniciante":
-            partida.valor = 0.25
-        elif partida.nivel == "Intermediario":
-            partida.valor = 0.3
-        elif partida.nivel == "Avancado":
-            partida.valor = 0.35
-        try:
-            # Criar o produto junto com o Preço no Stripe
-            stripe_produto_id, stripe_preco_id = criar_produto_stripe(
-                nome=partida.titulo,
-                preco=partida.valor,
-            )
-            partida.id_stripe = stripe_produto_id
-            partida.preco_stripe = stripe_preco_id
-            partida.save()
-            #  Envia o email para o usuario que está logado
-            envioEmailCriarPartida.enviar_email(perfil_usuario, partida)
-        except Exception as e:
-            print(f"Erro ao enviar e-mail: {e}")  # Alterar
-        return response
+        # if partida.nivel == "Iniciante":
+        #     partida.valor = 0.25
+        # elif partida.nivel == "Intermediario":
+        #     partida.valor = 0.3
+        # elif partida.nivel == "Avançado":
+        #     partida.valor = 0.35
+        # try:
+        #     # Criar o produto junto com o Preço no Stripe
+        #     stripe_produto_id, stripe_preco_id = criar_produto_stripe(
+        #         nome=partida.titulo,
+        #         preco=partida.valor,
+        #     )
+        #     partida.id_stripe = stripe_produto_id
+        #     partida.preco_stripe = stripe_preco_id
+        #     partida.save()
+        #     #  Envia o email para o usuario que está logado
+        #     envioEmailCriarPartida.enviar_email(perfil_usuario, partida)
+        # except Exception as e:
+        #     print(f"Erro ao enviar e-mail: {e}")  # Alterar
+        # return response
 
 
 class verPartida(LoginRequiredMixin, DetailView):
@@ -165,9 +165,9 @@ class entrarPartida(LoginRequiredMixin, View):
             try:
                 # Envia o Email de participação
                 envioEmailParticipar.enviar_email(perfil_usuario, partida)
-                enviaEmailPagamento.enviar_email(perfil_usuario, partida)
-                participacao.pago = True  # Marca a partida como paga
-                participacao.save()
+                # enviaEmailPagamento.enviar_email(perfil_usuario, partida)
+                # participacao.pago = True  # Marca a partida como paga
+                # participacao.save()
                 partida.lotacao -= 1  # Diminui a lotação da partida
                 partida.save()
 
@@ -176,8 +176,8 @@ class entrarPartida(LoginRequiredMixin, View):
             except Exception as e:
                 mensagem = f'Usuário entrou na partida, mas ocorreu um erro ao enviar o email: {e}'
                 tipo_mensagem = 'erro'
-                participacao.pago = True  # Marca a partida como paga
-                participacao.save()
+                # participacao.pago = True  # Marca a partida como paga
+                # participacao.save()
                 partida.lotacao -= 1  # Diminui a lotação da partida
                 partida.save()
         else:

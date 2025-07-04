@@ -15,7 +15,7 @@ urlpatterns = [
     path('accounts/profile/edit/', profileEdit.as_view(),
          name='account_profile_edit'),
     path('user/', include('User.urls')),
-    path('pagamento/', include('Pagamento.urls')),
+    # path('pagamento/', include('Pagamento.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # path('api/v1/', include('Times.urls')),
 # path('api/v1/', include('Notificacao.urls')),

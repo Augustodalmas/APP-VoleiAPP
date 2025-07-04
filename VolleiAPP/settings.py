@@ -129,9 +129,9 @@ ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/profile/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/partidas/'  # Ou qualquer URL desejada
 ACCOUNT_CHANGE_PASSWORD_REDIRECT_URL = '/accounts/profile/'  # Após alterar a senha
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Backend padrão para envio de emails
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'                                # Servidor SMTP
 EMAIL_PORT = 587                                             # Porta para envio
 # Ativar TLS para segurança
@@ -157,23 +157,27 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 load_dotenv()
 
-STRIPE_TEST_PUBLIC_KEY = os.getenv('STRIPE_TEST_PUBLIC_KEY')
-STRIPE_TEST_SECRET_KEY = os.getenv('STRIPE_TEST_SECRET_KEY')
+# STRIPE_TEST_PUBLIC_KEY = os.getenv('STRIPE_TEST_PUBLIC_KEY')
+# STRIPE_TEST_SECRET_KEY = os.getenv('STRIPE_TEST_SECRET_KEY')
+GOOGLE_ID = os.getenv('client_id')
+SECRET_ID = os.getenv('secret')
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
-            'profile',  # Dados de perfil (nome, foto)
-            'email',    # Dados de email
+            'profile',
+            'email',
         ],
         'AUTH_PARAMS': {
-            'access_type': 'online',  # Pode ser 'offline' se precisar de token de atualização
+            'access_type': 'online',
         },
         'EXCHANGE_TOKEN': True,
         'VERIFIED_EMAIL': True,
         'APP': {
-            'client_id': 'x',
-            'secret': 'x',
+          
+            'client_id': GOOGLE_ID,
+            'secret': SECRET_ID,
+
             'key': ''
         }
     }
